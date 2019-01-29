@@ -40,11 +40,11 @@ public:
 
     auto async_call(const std::string& func_name, const message_ptr& message)
     {
-        serialize_util::singleton::get()->check_message(message);
+        serialize_util::check_message(message);
         client_flag flag{ serialize_mode::serialize, client_type_ };
         return rpc_task<async_rpc_client>{ request_content{ ++call_id_, flag, func_name, 
                                            message->GetDescriptor()->full_name(), 
-                                           serialize_util::singleton::get()->serialize(message) }, this };
+                                           serialize_util::serialize(message) }, this };
     }
 
     auto async_call_raw(const std::string& func_name, const std::string& body)

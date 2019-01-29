@@ -37,7 +37,7 @@ public:
         if (message != nullptr)
         {
             std::string message_name = message->GetDescriptor()->full_name();
-            std::string body = serialize_util::singleton::get()->serialize(message);
+            std::string body = serialize_util::serialize(message);
             if (!message_name.empty() && !body.empty())
             {
                 connect_->async_write(response_content{ call_id_, rpc_error_code::ok, message_name, body });

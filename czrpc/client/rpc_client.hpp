@@ -36,13 +36,13 @@ public:
 
     message_ptr call(const std::string& func_name, const message_ptr& message)
     {
-        serialize_util::singleton::get()->check_message(message);
+        serialize_util::check_message(message);
         sync_connect();
         client_flag flag{ serialize_mode::serialize, client_type_ };
         auto rsp = write_and_read(request_content{ 0, flag, func_name, message->GetDescriptor()->full_name(), 
-                                  serialize_util::singleton::get()->serialize(message) });
+                                  serialize_util::serialize(message) });
         check_error_code(rsp.code);
-        return serialize_util::singleton::get()->deserialize(rsp.message_name, rsp.body);
+        return serialize_util::deserialize(rsp.message_name, rsp.body);
     }
 
     std::string call_raw(const std::string& func_name, const std::string& body)

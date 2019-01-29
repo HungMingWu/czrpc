@@ -131,10 +131,10 @@ public:
 
     void publish(const std::string& topic_name, const message_ptr& message)
     {
-        serialize_util::singleton::get()->check_message(message);
+        serialize_util::check_message(message);
         publish_impl(push_content{ serialize_mode::serialize, topic_name, 
                      message->GetDescriptor()->full_name(), 
-                     serialize_util::singleton::get()->serialize(message) });
+                     serialize_util::serialize(message) });
     }
 
     void publish_raw(const std::string& topic_name, const std::string& message)
@@ -204,7 +204,7 @@ private:
 
     void rpc_coming_with_serialize(const request_content& content, const connection_ptr& conn)
     {
-        message_ptr req_message = serialize_util::singleton::get()->deserialize(content.message_name, content.body);
+        message_ptr req_message = serialize_util::deserialize(content.message_name, content.body);
         auto req = std::make_shared<request>(req_message, conn->get_session_id());
         auto rsp = std::make_shared<response>(conn, content.call_id);
         if (!router::singleton::get()->route(content.protocol, req, rsp))

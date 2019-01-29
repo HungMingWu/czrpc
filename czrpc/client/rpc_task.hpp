@@ -35,7 +35,7 @@ public:
                     else
                     {
                         func(czrpc::message::result(ec, content.call_id,
-						serialize_util::singleton::get()->deserialize(content.message_name, content.body)));
+						serialize_util::deserialize(content.message_name, content.body)));
                     }
                 }
                 else
