@@ -29,8 +29,7 @@ public:
     {
         for (size_t i = 0; i < num; ++i)
         {
-            auto t = std::make_shared<std::thread>(std::bind(&thread_pool::run_task, this));
-            thread_vec_.emplace_back(t);
+            thread_vec_.emplace_back(std::bind(&thread_pool::run_task, this));
         }
     }
 
@@ -91,17 +90,17 @@ private:
     {
         is_stop_threadpool_ = true;
         cond_.notify_all();
-        for(auto& iter: thread_vec_)
+        for(auto& th : thread_vec_)
         {
-            if (iter->joinable())
+            if (th.joinable())
             {
-                iter->join();
+                th.join();
             }
         }
     }
 
 private:
-    std::vector<std::shared_ptr<std::thread>> thread_vec_;
+    std::vector<std::thread> thread_vec_;
     std::queue<std::function<void()>> task_queue_;
 
     std::mutex mutex_;
