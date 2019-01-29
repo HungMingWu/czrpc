@@ -8,11 +8,11 @@
 class test
 {
 public:
-    void echo(const czrpc::message::request_ptr& req, const czrpc::message::response_ptr& rsp)
+    void echo(const czrpc::message::request& req, czrpc::message::response& rsp)
     {
-        std::cout << "session_id: " << req->session_id() << std::endl;
-        req->message()->PrintDebugString();
-        rsp->set_response(req->message());
+        std::cout << "session_id: " << req.session_id() << std::endl;
+        req.message()->PrintDebugString();
+        rsp.set_response(req.message());
     }
 };
 

@@ -26,7 +26,6 @@ private:
     std::string raw_data_;
     std::string session_id_;
 };
-using request_ptr = std::shared_ptr<request>;
 
 class response
 {
@@ -57,7 +56,6 @@ private:
     connection_ptr connect_;
     unsigned int call_id_ = 0;
 };
-using response_ptr = std::shared_ptr<response>;
 
 }
 }

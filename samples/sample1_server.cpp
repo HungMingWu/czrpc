@@ -5,10 +5,10 @@
 #include "czrpc/server/server.hpp"
 #include "common.pb.h"
 
-void echo(const czrpc::message::request_ptr& req, const czrpc::message::response_ptr& rsp)
+void echo(const czrpc::message::request& req, czrpc::message::response& rsp)
 {
-    req->message()->PrintDebugString();
-    rsp->set_response(req->message());
+    req.message()->PrintDebugString();
+    rsp.set_response(req.message());
 }
 
 int main()

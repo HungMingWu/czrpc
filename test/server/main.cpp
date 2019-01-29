@@ -5,10 +5,10 @@
 
 czrpc::server::server app;
 
-void request_person_info(const czrpc::message::request_ptr& req, const czrpc::message::response_ptr& rsp)
+void request_person_info(const czrpc::message::request& req, czrpc::message::response& rsp)
 {
-    std::cout << "session id: " << req->session_id() << std::endl;
-    auto message = std::dynamic_pointer_cast<request_person_info_message>(req->message());
+    std::cout << "session id: " << req.session_id() << std::endl;
+    auto message = std::dynamic_pointer_cast<request_person_info_message>(req.message());
     message->PrintDebugString();
 #if 1
     auto out_message = std::make_shared<response_person_info_message>();
@@ -19,15 +19,15 @@ void request_person_info(const czrpc::message::request_ptr& req, const czrpc::me
     out_message->set_error_code(100);
     out_message->set_error_string("Not found person info");
 #endif
-    rsp->set_response(out_message);
+    rsp.set_response(out_message);
 }
 
 class test
 {
 public:
-    void echo(const czrpc::message::request_ptr& req, const czrpc::message::response_ptr& rsp)
+    void echo(const czrpc::message::request& req, czrpc::message::response& rsp)
     {
-        rsp->set_response(req->raw_data());
+        rsp.set_response(req.raw_data());
     }
 };
 

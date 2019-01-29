@@ -4,10 +4,10 @@
 #include <iostream>
 #include "czrpc/server/server.hpp"
 
-void echo(const czrpc::message::request_ptr& req, const czrpc::message::response_ptr& rsp)
+void echo(const czrpc::message::request& req, czrpc::message::response& rsp)
 {
-    std::cout << req->raw_data() << std::endl;
-    rsp->set_response(req->raw_data());
+    std::cout << req.raw_data() << std::endl;
+    rsp.set_response(req.raw_data());
 }
 
 int main()
