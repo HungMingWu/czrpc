@@ -19,14 +19,14 @@ int main()
         req->set_echo_num(100);
 
         // 3.异步调用echo函数
-        client.async_call("echo", req).result([](const czrpc::message::result_ptr& ret)
+        client.async_call("echo", req).result([](const czrpc::message::result& ret)
         {
-            if (ret->error_code())
+            if (ret.error_code())
             {
-                std::cout << ret->error_code().message() << std::endl;
+                std::cout << ret.error_code().message() << std::endl;
                 return;
             }
-            ret->message()->PrintDebugString();
+            ret.message()->PrintDebugString();
         });
     }
     catch (std::exception& e)

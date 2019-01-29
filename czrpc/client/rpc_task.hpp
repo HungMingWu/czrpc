@@ -19,7 +19,7 @@ public:
     rpc_task(const request_content& content, T* client) 
         : content_(content), client_(client) {}
 
-    unsigned int result(const std::function<void(const czrpc::message::result_ptr&)>& func)
+    unsigned int result(const std::function<void(const czrpc::message::result&)>& func)
     {
         task_ = [func, this](const response_content& content)
         {
@@ -30,27 +30,23 @@ public:
                 {
                     if (ec)
                     {
-                        auto ret = std::make_shared<czrpc::message::result>(ec, content.call_id);
-                        func(ret);
+                        func(czrpc::message::result(ec, content.call_id));
                     }
                     else
                     {
-                        auto ret = std::make_shared<czrpc::message::result>(ec, content.call_id,
-                                                                            serialize_util::singleton::get()->deserialize(content.message_name, content.body));
-                        func(ret);
+                        func(czrpc::message::result(ec, content.call_id,
+						serialize_util::singleton::get()->deserialize(content.message_name, content.body)));
                     }
                 }
                 else
                 {
                     if (ec)
                     {
-                        auto ret = std::make_shared<czrpc::message::result>(ec, content.call_id, "");
-                        func(ret);
+                        func(czrpc::message::result(ec, content.call_id, ""));
                     }
                     else
                     {
-                        auto ret = std::make_shared<czrpc::message::result>(ec, content.call_id, content.body);
-                        func(ret);
+                        func(czrpc::message::result(ec, content.call_id, content.body));
                     }
                 }
             }

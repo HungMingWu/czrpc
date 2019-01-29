@@ -18,34 +18,34 @@ void test_func()
             message->set_name("Jack");
             message->set_age(20);
 
-            client.async_call("request_person_info", message).result([](const czrpc::message::result_ptr& ret)
+            client.async_call("request_person_info", message).result([](const czrpc::message::result& ret)
             {
-                if (ret->error_code())
+                if (ret.error_code())
                 {
-                    log_warn() << ret->error_code().message();
+                    log_warn() << ret.error_code().message();
                     return;
                 }
 
-                if (IS_SAME(ret->message(), response_person_info_message))
+                if (IS_SAME(ret.message(), response_person_info_message))
                 {
-                    auto message = std::dynamic_pointer_cast<response_person_info_message>(ret->message()); 
+                    auto message = std::dynamic_pointer_cast<response_person_info_message>(ret.message()); 
                     message->PrintDebugString();
                 }
-                else if (IS_SAME(ret->message(), response_error))
+                else if (IS_SAME(ret.message(), response_error))
                 {
-                    auto message = std::dynamic_pointer_cast<response_error>(ret->message()); 
+                    auto message = std::dynamic_pointer_cast<response_error>(ret.message()); 
                     message->PrintDebugString();
                 }
             });
 
-            client.async_call_raw("echo", "Hello world").result([](const czrpc::message::result_ptr& ret)
+            client.async_call_raw("echo", "Hello world").result([](const czrpc::message::result& ret)
             {
-                if (ret->error_code())
+                if (ret.error_code())
                 {
-                    log_warn() << ret->error_code().message();
+                    log_warn() << ret.error_code().message();
                     return;
                 }
-                std::cout << ret->raw_data() << std::endl;
+                std::cout << ret.raw_data() << std::endl;
             });
         }
         catch (std::exception& e)
@@ -81,22 +81,22 @@ int main()
         message->set_name("Jack");
         message->set_age(20);
 
-        client.async_call("request_person_info", message).result([](const czrpc::message::result_ptr& ret)
+        client.async_call("request_person_info", message).result([](const czrpc::message::result& ret)
         {
-            if (ret->error_code())
+            if (ret.error_code())
             {
                 log_warn() << ec.message();
                 return;
             }
 
-            if (IS_SAME(ret->message(), response_person_info_message))
+            if (IS_SAME(ret.message(), response_person_info_message))
             {
-                auto message = std::dynamic_pointer_cast<response_person_info_message>(ret->message()); 
+                auto message = std::dynamic_pointer_cast<response_person_info_message>(ret.message()); 
                 message->PrintDebugString();
             }
-            else if (IS_SAME(ret->message(), response_error))
+            else if (IS_SAME(ret.message(), response_error))
             {
-                auto message = std::dynamic_pointer_cast<response_error>(ret->message()); 
+                auto message = std::dynamic_pointer_cast<response_error>(ret.message()); 
                 message->PrintDebugString();
             }
         });

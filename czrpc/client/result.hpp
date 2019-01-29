@@ -26,7 +26,6 @@ private:
     message_ptr message_ = nullptr;
     std::string raw_data_;
 };
-using result_ptr = std::shared_ptr<result>;
 
 }
 }
