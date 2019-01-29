@@ -19,25 +19,33 @@ public:
     template<typename Function>
     void bind(const std::string& protocol, const Function& func)
     {
-        route_map_.replace(protocol, sub_invoker_function{ std::bind(&invoker<Function>::apply, func, std::placeholders::_1) });
+        route_map_.replace(protocol, sub_invoker_function{ [func](auto&& ...params) {
+            invoker<Function>::apply(func, std::forward<decltype(params)>(params)...);
+        }});
     }
 
     template<typename Function, typename Self>
     void bind(const std::string& protocol, const Function& func, Self* self)
     {
-        route_map_.replace(protocol, sub_invoker_function{ std::bind(&invoker<Function>::template apply_member<Self>, func, self, std::placeholders::_1) });
+        route_map_.replace(protocol, sub_invoker_function{ [func, self](auto&& ...params) {
+            invoker<Function>::template apply_member<Self>(func, self, std::forward<decltype(params)>(params)...);
+        }});
     }
 
     template<typename Function>
     void bind_raw(const std::string& protocol, const Function& func)
     {
-        route_raw_map_.replace(protocol, sub_invoker_function_raw{ std::bind(&invoker_raw<Function>::apply, func, std::placeholders::_1) });
+        route_raw_map_.replace(protocol, sub_invoker_function_raw{ [func](auto&& ...params) {
+            invoker_raw<Function>::apply(func, std::forward<decltype(params)>(params)...);
+        }});
     }
 
     template<typename Function, typename Self>
     void bind_raw(const std::string& protocol, const Function& func, Self* self)
     {
-        route_raw_map_.replace(protocol, sub_invoker_function_raw{ std::bind(&invoker_raw<Function>::template apply_member<Self>, func, self, std::placeholders::_1) });
+        route_raw_map_.replace(protocol, sub_invoker_function_raw{ [func, self](auto&& ...params) {
+            invoker_raw<Function>::template apply_member<Self>(func, self, std::forward<decltype(params)>(params)...);
+        }});
     }
 
     void unbind(const std::string& protocol)

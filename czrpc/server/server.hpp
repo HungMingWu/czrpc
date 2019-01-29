@@ -145,8 +145,12 @@ public:
 private:
     void listen()
     {
-        auto route_func = std::bind(&server::route, this, std::placeholders::_1, std::placeholders::_2);
-        auto handle_error_func = std::bind(&server::handle_error, this, std::placeholders::_1);
+        auto route_func = [this](auto&& ...params) {
+		route(std::forward<decltype(params)>(params)...);
+        };
+        auto handle_error_func = [this](auto&& ...params) {
+		handle_error(std::forward<decltype(params)>(params)...);
+        };
         for (auto& ep : endpoint_vec_)
         {
             auto endpoint = std::make_shared<tcp_endpoint>(route_func, handle_error_func, 

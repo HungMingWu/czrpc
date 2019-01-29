@@ -29,7 +29,7 @@ public:
     {
         for (size_t i = 0; i < num; ++i)
         {
-            thread_vec_.emplace_back(std::bind(&thread_pool::run_task, this));
+            thread_vec_.emplace_back([this] { run_task(); });
         }
     }
 
